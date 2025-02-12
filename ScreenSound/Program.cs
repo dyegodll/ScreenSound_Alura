@@ -3,43 +3,17 @@ using ScreenSound.Menus;
 using ScreenSound.Modelos;
 
 /*
- * Criar o banco ScreenSound através do Pesquisador de objetos do SQL Server e a tabela de artistas pelo script disponibilizado na atividade Preparando o ambiente: Scripts do banco de dados;
-  * Instalar o pacote System.Data.SqlClient no projeto através do Gerenciador de pacotes do NuGet;
-  * Criar a pasta Banco e a classe Connection com os dados de conexão com o banco de dados;
-  * Criar a classe ArtistaDAL e os métodos para listar e adicionar artistas;
-  * Testar no Program e verificar se tudo ocorreu como o esperado.
+    Adicione o pacote Microsoft.EntityFrameworkCore.SqlServer ao projeto;
+
+    Renomeie a classe Connection para ScreenSoundContext e faça as alterações para que ela passe a utilizar o Entity;
+
+    Substitua o código dos métodos no ArtistaDAL para utilizar o Entity;
+
+    Faça as alterações no menu para que a execução utilize o banco de dados. 
 */
-try
-{
-    var artistaDAL = new ArtistaDAL();
-  //  artistaDAL.AdicionarArtista(new Artista("Foo Fighters", "Foo Fighters é uma banda de rock alternativo americana formada por Dave Grohl em 1995."));
-    
-    var listaArtistas = artistaDAL.ListarArtistas();
 
-    artistaDAL.LocalizarArtistaPorId(1);
-
-    var artistaAtualizado = new Artista("Gabriela Rocha", "dsadadaafasdfdajçlkjljçk") { Id = 3 };
-    artistaDAL.AtualizarArtista(artistaAtualizado);
-
-    artistaDAL.ListarArtistas();
-
-    artistaDAL.DeletarArtista(artistaAtualizado);
-
-    artistaDAL.ListarArtistas();
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"Erro: {ex.Message}");
-}
-
-return; //somente pra os testes
-
-Artista ira = new Artista("Ira!", "Banda Ira!");
-Artista beatles = new("The Beatles", "Banda The Beatles");
-
-Dictionary<string, Artista> artistasRegistrados = new();
-artistasRegistrados.Add(ira.Nome, ira);
-artistasRegistrados.Add(beatles.Nome, beatles);
+var context = new ScreenSoundContext();
+var artistaDAL = new ArtistaDAL(context);
 
 Dictionary<int, Menu> opcoes = new();
 opcoes.Add(1, new MenuRegistrarArtista());
@@ -78,7 +52,7 @@ void ExibirOpcoesDoMenu()
     if (opcoes.ContainsKey(opcaoEscolhidaNumerica))
     {
         Menu menuASerExibido = opcoes[opcaoEscolhidaNumerica];
-        menuASerExibido.Executar(artistasRegistrados);
+        menuASerExibido.Executar(artistaDAL);
         if (opcaoEscolhidaNumerica > 0) ExibirOpcoesDoMenu();
     } 
     else
