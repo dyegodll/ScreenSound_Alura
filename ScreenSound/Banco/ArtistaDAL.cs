@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ScreenSound.Banco;
 
-internal class ArtistaDAL
+internal class ArtistaDAL: DAL<Artista>
 {
     private readonly ScreenSoundContext _context;
 
@@ -13,7 +13,7 @@ internal class ArtistaDAL
         this._context = context;
     }
 
-    public IEnumerable<Artista> ListarArtistas()
+    public override IEnumerable<Artista> Listar()
     {
         var lista = _context.Artistas.ToList();
         lista.ForEach(a => Console.WriteLine(a + "\n"));
@@ -30,21 +30,21 @@ internal class ArtistaDAL
         return _context.Artistas.FirstOrDefault(artista => artista.Nome.Equals(nome));
     }
 
-    public void AdicionarArtista(Artista artista)
+    public override void Adicionar(Artista artista)
     {
         _context.Artistas.Add(artista);
         _context.SaveChanges();
         Console.WriteLine($"Artista adicionado: {artista}\n");
     }
 
-    public void AtualizarArtista(Artista artista)
+    public override void Atualizar(Artista artista)
     {
         _context.Artistas.Update(artista);
         _context.SaveChanges();
         Console.WriteLine($"Artista atualiizado: {artista}\n");
     }
 
-    public void DeletarArtista(Artista artista)
+    public override void Deletar(Artista artista)
     {       
         _context.Artistas.Remove(artista);
         _context.SaveChanges();

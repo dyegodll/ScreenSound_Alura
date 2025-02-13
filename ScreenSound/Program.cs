@@ -2,33 +2,16 @@
 using ScreenSound.Menus;
 using ScreenSound.Modelos;
 
-/*
-- Como ainda não temos uma tabela de músicas, você pode criar uma nova tabela executando o script abaixo onde fazemos as consultas ao banco utilizando o Pesquisador de Objetos do SQLServer, como fizemos anteriormente para a tabela de músicas:
-    
-    create table Musicas(
-            Id INT PRIMARY KEY IDENTITY(1,1),
-            Nome NVARCHAR(255) NOT NULL
-    );
-
-- Criada a tabela, você deverá identificá-la na classe de contexto para que o Entity consiga relacionar a tabela a um objeto existente na aplicação;
-
-- Feito isso, é preciso criar o MusicaDAL com todos os métodos relacionados à tabela de músicas;
-
-- Testar o funcionamento dos métodos e da nova tabela.
-
-Na hora de testar os métodos relacionados à tabela de músicas, você vai perceber que as manipulações na tabela Musicas ainda não estão funcionando através do menu. Mas não se preocupe! Os recursos que precisamos para fazer esse vínculo serão abordados nas aulas seguintes. Então, para testar esta atividade, você pode utilizar o mesmo recurso que estávamos usando anteriormente e realizar os testes diretamente no Program, fora do menu.
-*/
-
 try
 {
     var _context = new ScreenSoundContext();
     var musicaDAL = new MusicaDAL(_context);
 
-    //musicaDAL.AdicionarMusica(m1);
-    //musicaDAL.AdicionarMusica(m2);
-    //musicaDAL.AdicionarMusica(m3);
+    //musicaDAL.Adicionar(m1);
+    //musicaDAL.Adicionar(m2);
+    //musicaDAL.Adicionar(m3);
     
-    musicaDAL.ListarMusicas();
+    musicaDAL.Listar();
 
     Musica m1 = musicaDAL.LocalizarMusicaPorNome("Lugar Secreto")!;
     m1.Nome = ("A Ele a Glória");
@@ -39,19 +22,19 @@ try
     //m3.Nome = ("Eu Navegarei");
 
 
-    //musicaDAL.ListarMusicas();
+    //musicaDAL.Listar();
 
-    //musicaDAL.DeletarMusica(m2);
+    //musicaDAL.Deletar(m2);
 
-    musicaDAL.AtualizarMusica(m1);
+    musicaDAL.Atualizar(m1);
 
-    musicaDAL.ListarMusicas();
+    musicaDAL.Listar();
 }
 catch (Exception ex)
 {
     Console.WriteLine(ex.Message);
 }
-return;
+return; //só para testar o código acima
 
 var context = new ScreenSoundContext();
 var artistaDAL = new ArtistaDAL(context);

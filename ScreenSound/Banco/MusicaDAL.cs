@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace ScreenSound.Banco;
 
-class MusicaDAL
+class MusicaDAL: DAL<Musica>
 {
     public MusicaDAL(ScreenSoundContext context)
     {
@@ -12,14 +12,14 @@ class MusicaDAL
 
     private readonly ScreenSoundContext _context;
 
-    public IEnumerable<Musica> ListarMusicas()
+    public override IEnumerable<Musica> Listar()
     {
         var lista = _context.Musicas.ToList();
         lista.ForEach(m => Console.WriteLine(m + "\n"));
         return lista;
     }
 
-    public void AdicionarMusica(Musica musica)
+    public override void Adicionar(Musica musica)
     {
         _context.Musicas.Add(musica);
         _context.SaveChanges();
@@ -44,7 +44,7 @@ class MusicaDAL
         return musica;
     }
 
-    public void AtualizarMusica(Musica musica)
+    public override void Atualizar(Musica musica)
     {
         if (musica is not null)
         {
@@ -55,7 +55,7 @@ class MusicaDAL
         else Console.WriteLine($"Música não localizada!\n");
     }
 
-    public void DeletarMusica(Musica musica)
+    public override void Deletar(Musica musica)
     {
         _context.Musicas.Remove(musica);
         _context.SaveChanges();
