@@ -2,42 +2,22 @@
 using ScreenSound.Menus;
 using ScreenSound.Modelos;
 
-try
-{
-    var _context = new ScreenSoundContext();
-    var musicaDAL = new MusicaDAL(_context);
+/*
+    Implementar e utilizar migrations para gerenciar o banco de dados;
 
-    //musicaDAL.Adicionar(m1);
-    //musicaDAL.Adicionar(m2);
-    //musicaDAL.Adicionar(m3);
-    
-    musicaDAL.Listar();
+    Adicionar migrations ao projeto para gerenciar diferentes versões do banco;
 
-    Musica m1 = musicaDAL.LocalizarMusicaPorNome("Lugar Secreto")!;
-    m1.Nome = ("A Ele a Glória");
-    
-    //Musica m2 = musicaDAL.LocalizarMusicaPorNome("Diz")!;
-    
-    //Musica m3 = musicaDAL.LocalizarMusicaPorNome("Me Atraiu")!;
-    //m3.Nome = ("Eu Navegarei");
+    Alterar a estrutura das tabelas adicionando uma nova coluna através da migration;
 
+    Incluir dados nas tabelas utilizando o migrationBuilder;
 
-    //musicaDAL.Listar();
+    Atualizar o banco de dados com as informações das migrations. 
+*/
 
-    //musicaDAL.Deletar(m2);
-
-    musicaDAL.Atualizar(m1);
-
-    musicaDAL.Listar();
-}
-catch (Exception ex)
-{
-    Console.WriteLine(ex.Message);
-}
-return; //só para testar o código acima
-
-var context = new ScreenSoundContext();
-var artistaDAL = new ArtistaDAL(context);
+var _context = new ScreenSoundContext();
+var artistaDAL = new DAL<Artista>(_context);
+var musicaDAL = new DAL<Musica>(_context);
+  
 
 Dictionary<int, Menu> opcoes = new();
 opcoes.Add(1, new MenuRegistrarArtista());

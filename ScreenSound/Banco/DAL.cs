@@ -4,7 +4,7 @@
     {
         protected readonly ScreenSoundContext _context;
 
-        protected DAL(ScreenSoundContext context)
+        public DAL(ScreenSoundContext context)
         {
             _context = context;
         }
