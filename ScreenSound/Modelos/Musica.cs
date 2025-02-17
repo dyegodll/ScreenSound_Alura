@@ -19,6 +19,6 @@ public class Musica
 
     public override string ToString()
     {
-        return @$"Música {Id}: {Nome}";
+        return $"♥ Música {Id}: {Nome} - Cantor: {Artista.Nome}";
     }
 }

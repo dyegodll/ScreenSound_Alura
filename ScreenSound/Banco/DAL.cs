@@ -12,8 +12,13 @@
         public IEnumerable<T> Listar()
         {
             var lista = _context.Set<T>().ToList();
-            lista.ForEach(a => Console.WriteLine(a + "\n"));
+            lista.ForEach(obj => Console.WriteLine(obj));
             return lista;
+        }
+
+        public IEnumerable<T> ListarPor(Func<T, bool> condicao)
+        {
+            return _context.Set<T>().Where(condicao);
         }
 
         public void Adicionar(T objeto)
