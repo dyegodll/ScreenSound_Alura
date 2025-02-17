@@ -1,6 +1,6 @@
 ﻿namespace ScreenSound.Modelos;
 
-internal class Musica
+public class Musica
 {
     public Musica(string nome)
     {
@@ -9,17 +9,16 @@ internal class Musica
 
     public string Nome { get; set; }
     public int Id { get; set; }
-    public int AnoLancamento { get; set; }
+    public int? AnoLancamento { get; set; }
+    public virtual Artista? Artista { get; set; } //virtual  para ser modificado pelo Proxy
 
     public void ExibirFichaTecnica()
     {
-        Console.WriteLine($"Nome: {Nome}");
-      
+        Console.WriteLine($"\t♦ {Nome} - Ano de Lançamento: {AnoLancamento}");
     }
 
     public override string ToString()
     {
-        return @$"Id: {Id}
-        Nome: {Nome}";
+        return @$"Música {Id}: {Nome}";
     }
 }

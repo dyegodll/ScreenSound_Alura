@@ -1,8 +1,8 @@
 ﻿namespace ScreenSound.Modelos; 
 
-internal class Artista 
+public class Artista 
 {
-    private List<Musica> musicas = new List<Musica>();
+    public virtual ICollection<Musica> Musicas { get; set; } = new List<Musica>(); //virtual  para ser modificado pelo Proxy
 
     public Artista(string nome, string bio)
     {
@@ -18,15 +18,15 @@ internal class Artista
 
     public void AdicionarMusica(Musica musica)
     {
-        musicas.Add(musica);
+        Musicas.Add(musica);
     }
 
     public void ExibirDiscografia()
     {
-        Console.WriteLine($"Discografia do artista {Nome}");
-        foreach (var musica in musicas)
+        Console.WriteLine($"\n☺ Discografia de {Nome}:");
+        foreach (var musica in Musicas)
         {
-            Console.WriteLine($"Música: {musica.Nome}");
+            Console.WriteLine($"\t♦ {musica.Nome} - Ano de Lançamento: {musica.AnoLancamento}");
         }
     }
 

@@ -16,7 +16,9 @@ internal class ScreenSoundContext: DbContext
     //inicia a conexão com o banco
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(connectionString);
+        optionsBuilder.
+            UseSqlServer(connectionString)
+            .UseLazyLoadingProxies(); //carregamento lento das informações e conexão com o banco
     }
 
 }

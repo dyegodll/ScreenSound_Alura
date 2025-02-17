@@ -3,15 +3,13 @@ using ScreenSound.Menus;
 using ScreenSound.Modelos;
 
 /*
-    Implementar e utilizar migrations para gerenciar o banco de dados;
+  <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.14" />
+    Utilizamos o pacote Proxies para utilizar o carregamento lento de informações na aplicação. 
+    Ele permite que os recursos sejam utilizados realmente quando forem necessários, otimizando 
+    o processo e sendo bastante útil quando temos recursos mais custosos na aplicação.
 
-    Adicionar migrations ao projeto para gerenciar diferentes versões do banco;
-
-    Alterar a estrutura das tabelas adicionando uma nova coluna através da migration;
-
-    Incluir dados nas tabelas utilizando o migrationBuilder;
-
-    Atualizar o banco de dados com as informações das migrations. 
+    O carregamento lento é uma técnica que carrega dados apenas quando eles são necessários, 
+    o que é ideal para otimizar o desempenho e o uso de recursos.
 */
 
 var _context = new ScreenSoundContext();
@@ -39,30 +37,36 @@ void ExibirLogo()
 ");
     Console.WriteLine("Boas vindas ao Screen Sound 3.0!");
 }
+ExibirOpcoesDoMenu();
 
 void ExibirOpcoesDoMenu()
 {
-    ExibirLogo();
-    Console.WriteLine("\nDigite 1 para registrar um artista");
-    Console.WriteLine("Digite 2 para registrar a música de um artista");
-    Console.WriteLine("Digite 3 para mostrar todos os artistas");
-    Console.WriteLine("Digite 4 para exibir todas as músicas de um artista");
-    Console.WriteLine("Digite -1 para sair");
-
-    Console.Write("\nDigite a sua opção: ");
-    string opcaoEscolhida = Console.ReadLine()!;
-    int opcaoEscolhidaNumerica = int.Parse(opcaoEscolhida);
-
-    if (opcoes.ContainsKey(opcaoEscolhidaNumerica))
+    try
     {
-        Menu menuASerExibido = opcoes[opcaoEscolhidaNumerica];
-        menuASerExibido.Executar(artistaDAL);
-        if (opcaoEscolhidaNumerica > 0) ExibirOpcoesDoMenu();
-    } 
-    else
+        ExibirLogo();
+        Console.WriteLine("\nDigite 1 para registrar um artista");
+        Console.WriteLine("Digite 2 para registrar a música de um artista");
+        Console.WriteLine("Digite 3 para mostrar todos os artistas");
+        Console.WriteLine("Digite 4 para exibir todas as músicas de um artista");
+        Console.WriteLine("Digite -1 para sair");
+
+        Console.Write("\nDigite a sua opção: ");
+        string opcaoEscolhida = Console.ReadLine()!;
+        int opcaoEscolhidaNumerica = int.Parse(opcaoEscolhida);
+
+        if (opcoes.ContainsKey(opcaoEscolhidaNumerica))
+        {
+            Menu menuASerExibido = opcoes[opcaoEscolhidaNumerica];
+            menuASerExibido.Executar(artistaDAL);
+            if (opcaoEscolhidaNumerica > 0) ExibirOpcoesDoMenu();
+        }
+        else
+        {
+            Console.WriteLine("Opção inválida");
+        }
+    }
+    catch (Exception ex)
     {
-        Console.WriteLine("Opção inválida");
+        Console.WriteLine($"Erro: {ex.Message}");
     }
 }
-
-ExibirOpcoesDoMenu();
