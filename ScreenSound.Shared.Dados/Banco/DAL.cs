@@ -44,7 +44,9 @@
 
         public T? RecuperarPor(Func<T, bool> condicao)
         {
-            return _context.Set<T>().FirstOrDefault(condicao);
+            var obj = _context.Set<T>().FirstOrDefault(condicao);
+            Console.WriteLine(obj);
+            return obj;
         }
 
     }

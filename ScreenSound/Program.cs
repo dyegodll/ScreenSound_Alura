@@ -2,21 +2,10 @@
 using ScreenSound.Menus;
 using ScreenSound.Modelos;
 
-/*
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.14" />
-    Utilizamos o pacote Proxies para utilizar o carregamento lento de informações na aplicação. 
-    Ele permite que os recursos sejam utilizados realmente quando forem necessários, otimizando 
-    o processo e sendo bastante útil quando temos recursos mais custosos na aplicação.
-
-    O carregamento lento é uma técnica que carrega dados apenas quando eles são necessários, 
-    o que é ideal para otimizar o desempenho e o uso de recursos.
-*/
-
 var _context = new ScreenSoundContext();
 var artistaDAL = new DAL<Artista>(_context);
 var musicaDAL = new DAL<Musica>(_context);
   
-
 Dictionary<int, Menu> opcoes = new();
 opcoes.Add(1, new MenuRegistrarArtista());
 opcoes.Add(2, new MenuRegistrarMusica());
