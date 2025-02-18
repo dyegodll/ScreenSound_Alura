@@ -4,7 +4,7 @@ using ScreenSound.Modelos;
 
 namespace ScreenSound.Banco;
 
-internal class ScreenSoundContext: DbContext
+public class ScreenSoundContext: DbContext
 {
     //propriedade ORM que se comunica com o banco relacional. Obs: deve ter o mesmo nome da tabela para que o EF identifique e associe os dois
     public DbSet<Artista> Artistas { get; set; }
