@@ -11,7 +11,7 @@ public class ScreenSoundContext: DbContext
     public DbSet<Musica> Musicas { get; set; }
 
     // caminho salvo nas propriedades da database em SQL SERVER Object Explorer
-    private string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ScreenSoundV0;Integrated Security=True;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+    private string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ScreenSoundV0;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
 
     //inicia a conexão com o banco
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
