@@ -2,6 +2,10 @@
 
 public class Artista 
 {
+    public Artista()
+    {
+            
+    }
     public Artista(string nome, string bio)
     {
         Nome = nome;
@@ -12,7 +16,7 @@ public class Artista
     public virtual ICollection<Musica> Musicas { get; set; } = new List<Musica>(); //virtual  para ser modificado pelo Proxy
 
     public string Nome { get; set; }
-    public string FotoPerfil { get; set; }
+    public string? FotoPerfil { get; set; }
     public string Bio { get; set; }
     public int Id { get; set; }
 

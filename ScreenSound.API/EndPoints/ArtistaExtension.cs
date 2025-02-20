@@ -1,34 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ScreenSound.API.Requests;
 using ScreenSound.Banco;
 using ScreenSound.Modelos;
 
 namespace ScreenSound.API.EndPoints;
 
-/*
-O que é um Método de Extensão?
-Um método de extensão é uma forma de adicionar novas funcionalidades a uma classe existente sem precisar modificar o código original dessa classe.
-
-No seu caso, o método AddEndPointArtista estende a classe WebApplication, permitindo que você adicione endpoints de forma organizada e modular.
-
-Como Funciona?
-Precisa ser um método static dentro de uma classe static
-
-Isso porque métodos de extensão não pertencem diretamente à classe original, mas sim a uma classe auxiliar.
-O primeiro parâmetro deve ter a palavra-chave this
-
-O this indica qual classe está sendo estendida. No seu código, a classe WebApplication está sendo estendida.
-
-Vantagens dos Métodos de Extensão
-✅ Código mais organizado – Mantém os endpoints separados, facilitando a manutenção.
-✅ Reutilizável – Pode ser chamado em diferentes partes do código sem precisar repetir lógica.
-✅ Facilidade na leitura – Você pode estruturar sua API melhor, separando endpoints por tipo.
-
-Resumo: Você está "ensinando" a classe WebApplication a fazer algo novo (AddEndPointArtista), sem precisar modificar o código original dela. 🚀
-*/
-
 public static class ArtistaExtension
 {
-    //Método de Extensão
     public static void AddEndPointArtista(this WebApplication app)
     {
         
@@ -52,9 +30,9 @@ public static class ArtistaExtension
             }
         });
 
-        app.MapPost("/Artistas", ([FromBody] Artista artista) =>
+        app.MapPost("/Artistas", ([FromServices] DAL<Artista> artistaDAL, [FromBody] ArtistaRequest artistaRequest) =>
         {
-            var artistaDAL = new DAL<Artista>(new ScreenSoundContext());
+            var artista = new Artista(artistaRequest.nome, artistaRequest.bio);
             artistaDAL.Adicionar(artista);
             return Results.Created();
         });
