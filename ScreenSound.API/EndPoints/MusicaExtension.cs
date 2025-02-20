@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ScreenSound.API.Requests;
+using ScreenSound.API.Response;
 using ScreenSound.Banco;
 using ScreenSound.Modelos;
 
@@ -47,9 +49,13 @@ public static class MusicaExtension
 
         });
 
-        app.MapPost("/Musicas", ([FromServices] DAL<Musica> dal, [FromBody] Musica musica) =>
+        app.MapPost("/Musicas", ([FromServices] DAL<Musica> dalMusica, [FromServices] DAL<Artista> dalArtista, [FromBody] MusicaRequest musicaRequest) =>
         {
-            dal.Adicionar(musica);
+            var musica = new Musica(musicaRequest.nome);
+            musica.AnoLancamento = musicaRequest.anoLancamento;
+            var artista = dalArtista.RecuperarPor(a => a.Id == musicaRequest.artistaId);
+            musica.Artista = artista;
+            dalMusica.Adicionar(musica);
             return Results.Ok();
         });
 
@@ -64,18 +70,29 @@ public static class MusicaExtension
 
         });
 
-        app.MapPut("/Musicas", ([FromServices] DAL<Musica> dal, [FromBody] Musica musica) => {
-            var musicaAAtualizar = dal.RecuperarPor(a => a.Id == musica.Id);
+        app.MapPut("/Musicas", ([FromServices] DAL<Musica> dal, [FromBody] MusicaRequestEdit musicaRequestEdit) => {
+            var musicaAAtualizar = dal.RecuperarPor(a => a.Id == musicaRequestEdit.Id);
             if (musicaAAtualizar is null)
             {
                 return Results.NotFound();
             }
-            musicaAAtualizar.Nome = musica.Nome;
-            musicaAAtualizar.AnoLancamento = musica.AnoLancamento;
+            musicaAAtualizar.Nome = musicaRequestEdit.nome;
+            musicaAAtualizar.AnoLancamento = musicaRequestEdit.anoLancamento;
 
             dal.Atualizar(musicaAAtualizar);
             return Results.Ok();
         });
 
     }
+
+    private static ICollection<MusicaResponse> EntityListToResponseList(IEnumerable<Musica> musicaList)
+    {
+        return musicaList.Select(a => EntityToResponse(a)).ToList();
+    }
+
+    private static MusicaResponse EntityToResponse(Musica musica)
+    {
+        return new MusicaResponse(musica.Id, musica.Nome!, musica.Artista!.Id, musica.Artista.Nome);
+    }
+
 }
