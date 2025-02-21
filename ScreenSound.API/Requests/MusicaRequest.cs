@@ -2,5 +2,5 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public record MusicaRequest([Required] string nome, [Required] int artistaId, int anoLancamento);
+    public record MusicaRequest([Required] string nome, [Required] int ArtistaId, int anoLancamento, ICollection<GeneroRequest> Generos = null);
 }

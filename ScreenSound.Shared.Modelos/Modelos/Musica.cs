@@ -2,6 +2,10 @@
 
 public class Musica
 {
+    public Musica()
+    {
+        
+    }
     public Musica(string nome)
     {
         Nome = nome;
@@ -10,7 +14,10 @@ public class Musica
     public string Nome { get; set; }
     public int Id { get; set; }
     public int? AnoLancamento { get; set; }
-    public virtual Artista? Artista { get; set; } //virtual  para ser modificado pelo Proxy
+    public int? ArtistaId { get; set; }
+    public virtual Artista? Artista { get; set; } //virtual  para ser modificado pelo EF CORE
+
+    public virtual ICollection<Genero> Generos { get; set; } //virtual  para ser modificado pelo EF CORE
 
     public void ExibirFichaTecnica()
     {

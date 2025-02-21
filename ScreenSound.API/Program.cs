@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using ScreenSound.API.EndPoints;
 using ScreenSound.Banco;
 using ScreenSound.Modelos;
@@ -40,8 +39,8 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =
 
 var app = builder.Build();
 
-app.AddEndPointArtista();
-app.AddEndPointMusica();
+app.AddEndPointsArtista();
+app.AddEndPointsMusicas();
 
 //Swagger
 app.UseSwagger();

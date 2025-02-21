@@ -10,7 +10,7 @@ namespace ScreenSound.API.EndPoints;
 O que é um Método de Extensão?
 Um método de extensão é uma forma de adicionar novas funcionalidades a uma classe existente sem precisar modificar o código original dessa classe.
 
-No seu caso, o método AddEndPointArtista estende a classe WebApplication, permitindo que você adicione endpoints de forma organizada e modular.
+No seu caso, o método AddEndPointsArtista estende a classe WebApplication, permitindo que você adicione endpoints de forma organizada e modular.
 
 Como Funciona?
 Precisa ser um método static dentro de uma classe static
@@ -25,17 +25,24 @@ Vantagens dos Métodos de Extensão
 ✅ Reutilizável – Pode ser chamado em diferentes partes do código sem precisar repetir lógica.
 ✅ Facilidade na leitura – Você pode estruturar sua API melhor, separando endpoints por tipo.
 
-Resumo: Você está "ensinando" a classe WebApplication a fazer algo novo (AddEndPointArtista), sem precisar modificar o código original dela. 🚀
+Resumo: Você está "ensinando" a classe WebApplication a fazer algo novo (AddEndPointsArtista), sem precisar modificar o código original dela. 🚀
 */
 
-public static class MusicaExtension
+
+public static class MusicasExtensions
 {
-    //Método de Extensão
-    public static void AddEndPointMusica(this WebApplication app)
+    public static void AddEndPointsMusicas(this WebApplication app)
     {
+        #region Endpoint Músicas
         app.MapGet("/Musicas", ([FromServices] DAL<Musica> dal) =>
         {
-            return Results.Ok(dal.Listar());
+            var musicaList = dal.Listar();
+            if (musicaList is null)
+            {
+                return Results.NotFound();
+            }
+            var musicaListResponse = EntityListToResponseList(musicaList);
+            return Results.Ok(musicaListResponse);
         });
 
         app.MapGet("/Musicas/{nome}", ([FromServices] DAL<Musica> dal, string nome) =>
@@ -45,17 +52,21 @@ public static class MusicaExtension
             {
                 return Results.NotFound();
             }
-            return Results.Ok(musica);
+            return Results.Ok(EntityToResponse(musica));
 
         });
 
-        app.MapPost("/Musicas", ([FromServices] DAL<Musica> dalMusica, [FromServices] DAL<Artista> dalArtista, [FromBody] MusicaRequest musicaRequest) =>
+        app.MapPost("/Musicas", ([FromServices] DAL<Musica> dal, [FromBody] MusicaRequest musicaRequest) =>
         {
-            var musica = new Musica(musicaRequest.nome);
-            musica.AnoLancamento = musicaRequest.anoLancamento;
-            var artista = dalArtista.RecuperarPor(a => a.Id == musicaRequest.artistaId);
-            musica.Artista = artista;
-            dalMusica.Adicionar(musica);
+            var musica = new Musica(musicaRequest.nome)
+            {
+                ArtistaId = musicaRequest.ArtistaId,
+                AnoLancamento = musicaRequest.anoLancamento,
+                Generos = musicaRequest.Generos is not null ? GeneroRequestConverter(musicaRequest.Generos) :
+                new List<Genero>()
+
+            };
+            dal.Adicionar(musica);
             return Results.Ok();
         });
 
@@ -82,7 +93,18 @@ public static class MusicaExtension
             dal.Atualizar(musicaAAtualizar);
             return Results.Ok();
         });
+        #endregion
 
+    }
+
+    private static ICollection<Genero> GeneroRequestConverter(ICollection<GeneroRequest> generos)
+    {
+        return generos.Select(a => RequestToEntity(a)).ToList();
+    }
+
+    private static Genero RequestToEntity(GeneroRequest genero)
+    {
+        return new Genero() { Nome = genero.Nome, Descricao = genero.Descricao };
     }
 
     private static ICollection<MusicaResponse> EntityListToResponseList(IEnumerable<Musica> musicaList)
@@ -94,5 +116,4 @@ public static class MusicaExtension
     {
         return new MusicaResponse(musica.Id, musica.Nome!, musica.Artista!.Id, musica.Artista.Nome);
     }
-
 }
